@@ -1,5 +1,7 @@
 var canvas = document.querySelector('#canvas');
 var game = new Game(canvas);
+var map = new TileRenderer();
+var mapfile = "map.csv";
 
 game.entities = [
     new Background(),
@@ -7,10 +9,11 @@ game.entities = [
     game.walls = []
 ];
 
-game.walls.push(new Wall({h: 30, w: 30, x: 20, y: game.height-30}));
-game.walls.push(new Wall({h: 60, w: 300, x: 50, y: game.height-60}));
-game.walls.push(new Wall({h: 30, w: 300, x: 190, y: game.height-160}));
-game.walls.push(new Wall({h: 330, w: 30, x: 590, y: game.height-330}));
+//game.walls.push(new Wall({h: 30, w: 30, x: 20, y: game.height-30}));
+//game.walls.push(new Wall({h: 60, w: 300, x: 50, y: game.height-60}));
+//game.walls.push(new Wall({h: 30, w: 300, x: 190, y: game.height-160}));
+//game.walls.push(new Wall({h: 330, w: 30, x: 590, y: game.height-330}));
+map.constructMap(mapfile)
 game.start();
 canvas.focus();
 canvas.width = game.width;

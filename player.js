@@ -29,15 +29,19 @@ Player.prototype.handleCollision = function() {
  
         if (dir === "l" || dir === "r") {
             this.xVelocity = 0;
-        } else if (dir === "b") {
+            this.color = "#bbb"
+        }
+        if (dir === "b") {
             this.isMaxJump = false;
-            this.jumpspeed = 0.2;
             this.isJumping = false;
+            this.jumpspeed = 0.2;
             this.yVelocity = 0;
             this.color = "#fff"
-        } else if (dir === "t") {
+        } 
+        if (dir === "t") {
             this.color = "#FE2E2E"
             
+            //only if the player is jumping and hits the top of a tile.
             if (this.yVelocity <= 0) {
                 this.yVelocity *= -1;
             }
