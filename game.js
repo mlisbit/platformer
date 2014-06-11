@@ -49,7 +49,10 @@ Game.prototype.update = function() {
         } else {
             if (entity.update) {entity.update()}
         }
-    })
+    });
+    
+    
+    //console.log(game.player.x/20)
 }
 
 Game.prototype.draw = function() {
@@ -65,4 +68,13 @@ Game.prototype.draw = function() {
     })
 }
 
-document.addEventListener('hitgameborder', function (e) { /*console.log('bottom hit!')*/}, false);
+document.addEventListener('hitgameborder', function (e) {}, false);
+
+document.addEventListener('hitthresholdborder', function (e) {
+    //game.walls.length = 0;
+	console.log(game.map.offx)
+	game.map.offx += 1
+    //game.map.constructMap({offy: 0})
+	game.map.shiftMap({shiftx: 1 })
+	game.player.x = game.width - game.player.threshold*game.map.tileWidth;
+}, false);

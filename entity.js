@@ -16,8 +16,8 @@ function Entity() {
 }
 
 Entity.prototype.update = function() {
-    //this.x += this.xVelocity;
-    //this.y += this.yVelocity; 
+    this.x += this.xVelocity;
+    this.y += this.yVelocity; 
 };
 
 Entity.prototype.draw = function(ctx) {

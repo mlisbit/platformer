@@ -1,7 +1,6 @@
 var canvas = document.querySelector('#canvas');
 var game = new Game(canvas);
-var map = new TileRenderer();
-var mapfile = "map.csv";
+game.map = new TileRenderer({fileName: 'map.csv'});
 
 game.entities = [
     new Background(),
@@ -13,7 +12,8 @@ game.entities = [
 //game.walls.push(new Wall({h: 60, w: 300, x: 50, y: game.height-60}));
 //game.walls.push(new Wall({h: 30, w: 300, x: 190, y: game.height-160}));
 //game.walls.push(new Wall({h: 330, w: 30, x: 590, y: game.height-330}));
-map.constructMap(mapfile)
+
+game.map.constructMap({offx: 0, offy: 0})
 game.start();
 canvas.focus();
 canvas.width = game.width;
@@ -24,4 +24,10 @@ function Background() {}
 Background.prototype.draw = function(ctx) {
     ctx.fillStyle = "#151515";
     ctx.fillRect(0,0,game.width, game.height); 
+	
+	ctx.beginPath();
+	ctx.moveTo(game.width - game.player.threshold*game.map.tileWidth,0);
+	ctx.lineTo(game.width - game.player.threshold*game.map.tileWidth,game.height);
+	ctx.strokeStyle = '#fff';
+	ctx.stroke()
 }

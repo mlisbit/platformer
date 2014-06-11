@@ -8,19 +8,24 @@ function Player () {
 
 	this.y = 50;
 	this.x = 20;
-    
-    this.jumpspeed = 0.2;
 
-    this.isJumping = true;
-    this.isMaxJump = false;
+	this.jumpspeed  = 0.2;
+	this.threshold = 3;
+
+	this.isJumping  = true;
+	this.isMaxJump  = false;
+	this.isMoving   = false;
+
+	this.needsNewMap = false;
+
 }
 
 /*
     http://www.wildbunny.co.uk/blog/2011/12/11/how-to-make-a-2d-platform-game-part-1/
 */
 
-Player.prototype = Object.create(Entity.prototype)
-Player.prototype.constructor = Player
+Player.prototype = new Entity();
+Player.prototype.constructor = Player;
 
 Player.prototype.handleCollision = function() {
     for (var i = 0 ; i < game.walls.length ; i ++) {
@@ -95,21 +100,6 @@ Player.prototype.update = function() {
     var gravity = 0.4; //higher the faster you jump/fall
     var friction = 0.65;
     var maxjump = 1;
-    
-    if (game.keyPressed.up) {
-        
-        if (!this.isJumping) {
-            this.isJumping = true;
-            this.yVelocity = -speed*this.jumpspeed;
-        } else {
-            if (this.jumpspeed <= maxjump && !this.isMaxJump) {
-                this.jumpspeed += 0.2;
-                this.yVelocity = -speed*this.jumpspeed;
-            } else {
-                this.isMaxJump = true;
-            }
-        }
-    }
     if (game.keyPressed.left) {
         this.x--;
         if (this.handleCollision() != 'l') {
@@ -122,6 +112,29 @@ Player.prototype.update = function() {
         if (this.handleCollision() != 'r') {
             this.xVelocity = speed;
         }
+    }
+    
+    if (game.keyPressed.up) {
+        if (!this.isJumping) {
+            this.isJumping = true;
+            this.yVelocity = -speed*this.jumpspeed;
+        } else {
+            if (this.jumpspeed <= maxjump && !this.isMaxJump) {
+                this.jumpspeed += 0.2;
+                this.yVelocity = -speed*this.jumpspeed;
+            } else {
+                this.isMaxJump = true;
+            }
+        }
+    }
+    
+    if (game.keyPressed.up || game.keyPressed.left || game.keyPressed.right || game.keyPressed.down) {
+        //console.log(game.keyPressed)
+        this.isMoving = true;
+		this.needsNewMap = true;
+    } else {
+        //console.log(game.keyPressed)
+        this.isMoving = false;
     }
 
     /* prevent double jump if max height not reached */
@@ -148,6 +161,13 @@ Player.prototype.update = function() {
         this.jumpspeed = 0.2;
     }
     
+    if(this.x >= game.width-this.threshold*game.map.tileWidth && this.isMoving && this.needsNewMap){
+		this.needsNewMap = false;
+        var hitThresholdBorder = new CustomEvent('hitthresholdborder', { 'side': 'right' });
+        document.dispatchEvent(hitThresholdBorder);
+    }
     
-	Entity.prototype.update.apply(this);
+    
+    
+    //Entity.prototype.update.apply(this);
 };
